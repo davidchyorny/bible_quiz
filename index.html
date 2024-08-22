@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Библия Викторина</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+        .question-container {
+            margin: 20px 0;
+        }
+        .result {
+            font-size: 1.2em;
+            margin-top: 20px;
+            color: #00ff00;
+        }
+        .wrong {
+            color: #ff4500;
+        }
+        .answer-button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #333333;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+        }
+        .answer-button:hover {
+            background-color: #555555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Викторина: Книги Библии</h1>
+    <div id="quiz-container"></div>
+    <div class="result" id="result"></div>
+    <script>
+const books = [
+    { name: "Бытие", testament: "Ветхий Завет" },
+    { name: "Исход", testament: "Ветхий Завет" },
+    { name: "Левит", testament: "Ветхий Завет" },
+    { name: "Числа", testament: "Ветхий Завет" },
+    { name: "Второзаконие", testament: "Ветхий Завет" },
+    // ... все остальные книги
+    { name: "Откровение", testament: "Новый Завет" }
+];
+
+let score = 0;
+
+function getRandomBook() {
+    const randomIndex = Math.floor(Math.random() * books.length);
+    return books[randomIndex];
+}
+
+function displayQuestion() {
+    const quizContainer = document.getElementById('quiz-container');
+    quizContainer.innerHTML = '';
+
+    const questionContainer = document.createElement('div');
+    questionContainer.classList.add('question-container');
+
+    const currentBook = getRandomBook();
+    const question = document.createElement('p');
+    question.innerText = `К какому завету относится книга "${currentBook.name}"?`;
+    questionContainer.appendChild(question);
+
+    const oldTestamentButton = document.createElement('button');
+    oldTestamentButton.innerText = 'Ветхий Завет';
+    oldTestamentButton.classList.add('answer-button');
+    oldTestamentButton.onclick = () => checkAnswer('Ветхий Завет', currentBook);
+    questionContainer.appendChild(oldTestamentButton);
+
+    const newTestamentButton = document.createElement('button');
+    newTestamentButton.innerText = 'Новый Завет';
+    newTestamentButton.classList.add('answer-button');
+    newTestamentButton.onclick = () => checkAnswer('Новый Завет', currentBook);
+    questionContainer.appendChild(newTestamentButton);
+
+    quizContainer.appendChild(questionContainer);
+}
+
+function checkAnswer(selectedTestament, currentBook) {
+    const resultContainer = document.getElementById('result');
+
+    if (selectedTestament === currentBook.testament) {
+        score++;
+        resultContainer.innerHTML = `Правильно! Счёт: ${score}.`;
+        resultContainer.classList.remove('wrong');
+    } else {
+        resultContainer.innerHTML = `Неправильно. "${currentBook.name}" относится к ${currentBook.testament}.`;
+        resultContainer.classList.add('wrong');
+    }
+
+    setTimeout(displayQuestion, 1500);
+}
+
+displayQuestion();
+
+</script>
